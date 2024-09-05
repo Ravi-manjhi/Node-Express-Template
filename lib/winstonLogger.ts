@@ -27,10 +27,16 @@ const logger = winston.createLogger({
       format: winston.format.combine(
         winston.format.colorize(),
         winston.format.simple(),
+        winston.format.errors({ stack: true }),
         winston.format.label({ label: process.env.NODE_ENV }),
         winston.format.timestamp({ format: "DD-MM-YYYY HH:mm:ss" }),
-        winston.format.printf(({ timestamp, level, message, label }) => {
-          return `${label} | ${level} : ${message} | ${timestamp}`;
+        winston.format.printf(({ timestamp, level, message, label, stack }) => {
+          if (stack) {
+            return `${level} : ${message} | ${label} | ${timestamp}\n${
+              stack ? stack : ""
+            }`;
+          }
+          return `${level} : ${message} | ${label} | ${timestamp}`;
         })
       ),
     }),
@@ -53,6 +59,7 @@ const logger = winston.createLogger({
       maxSize: "20m", // Maximum size of each log file
     }),
   ],
+  defaultMeta: { service: "Common_Estate" },
 });
 
 export const morganStream = {
