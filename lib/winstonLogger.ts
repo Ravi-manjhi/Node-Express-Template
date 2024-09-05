@@ -28,6 +28,8 @@ const logger = winston.createLogger({
         winston.format.colorize(),
         winston.format.simple(),
         winston.format.errors({ stack: true }),
+        winston.format.json(),
+        winston.format.prettyPrint(),
         winston.format.label({ label: process.env.NODE_ENV }),
         winston.format.timestamp({ format: "DD-MM-YYYY HH:mm:ss" }),
         winston.format.printf(({ timestamp, level, message, label, stack }) => {
