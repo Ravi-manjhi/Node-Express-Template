@@ -1,25 +1,28 @@
-import { error } from "console";
+import logger from "./winstonLogger";
 
-export const uncaughtException = () =>
-  process.on("uncaughtException", (error) => {
-    console.error(`uncaughtException --- ${error.name} ----- ${error.message}`);
+export const setupUncaughtException = () => {
+  process.on("uncaughtException", (error: Error) => {
+    logger.error("Uncaught Exception", error);
     process.exit(1);
   });
+};
 
-export const unhandledRejection = (server: any) =>
-  process.on("unhandledRejection", (reason, promise) => {
-    console.error("Unhandled Rejection at:", promise, "reason:", reason);
+export const setupUnhandledRejection = (server: any) => {
+  process.on("unhandledRejection", (reason: any, p: Promise<any>) => {
+    logger.error("Unhandled Rejection", reason);
+
     let time = 5;
     const interval = setInterval(() => {
-      console.info(`server will close in ${time}`);
+      logger.info(`Server will close in ${time} seconds...`);
       time--;
     }, 1000);
 
     setTimeout(() => {
       clearInterval(interval);
       server.close(() => {
-        console.log("Server closed gracefully.");
+        logger.alert("Server closed gracefully.");
         process.exit(1);
       });
     }, 5000);
   });
+};
