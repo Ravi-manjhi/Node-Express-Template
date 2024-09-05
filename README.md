@@ -1,41 +1,92 @@
-# Express Server Template
+# Express Server in a Single File (TypeScript)
 
-This repository serves as a starting point for creating an Express server using TypeScript. It includes basic configurations and example endpoints to help you get started quickly.
+This is a simple template for creating an Express server using TypeScript in a **single file**. It includes basic configurations, a route example, and middleware setup.
 
 ## Getting Started
 
-To get a local copy of this project up and running, follow these steps:
+Follow the steps below to create and run the server.
+
+### Prerequisites
+
+Make sure you have Node.js and npm installed.
+
+### Installation
 
 1. **Clone the repository:**
-
    ```bash
    git clone <repository_url>
    cd <project_folder>
-   npm install
-   npm run dev
-   npm run prod
-   npm build
    ```
-   
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+### Running the Server
+
+- **Start the server:**
+   ```bash
+   npm run dev
+   ```
+
+## Project Structure
+
+The project structure is organized as follows:
+
+```
 project-root/
 │
-├                          # Source files
-│── controllers/           # API route controllers
-│── middlewares/           # API route middlewares
-│── routes/                # Express routes
-│── app.ts                 # Express application setup
-│── server.ts              # Server entry point
-├── lib/                   #  (function and modules)
-|
+├── src/                   # Source files
+│   ├── controllers/       # API route controllers
+│   ├── middlewares/       # API route middlewares
+│   ├── routes/            # Express routes
+│   ├── app.ts             # Express application setup
+│   └── server.ts          # Server entry point
+│
+├── lib/                   # Custom functions and modules
+│
 ├── dist/                  # Compiled TypeScript (generated after build)
 │
 ├── node_modules/          # Dependencies (generated after `npm install`)
 │
 ├── package.json           # Project dependencies and scripts
 └── tsconfig.json          # TypeScript configuration file
+```
 
-Customize
-Feel free to customize and expand upon this template to suit your project's specific needs. You can add middleware, database connections, authentication, or any other features as required.
+### TypeScript Configuration
 
-Contributing
-Contributions are welcome! Please fork the repository and create a pull request with your improvements.
+You'll need a `tsconfig.json` file to compile TypeScript. Here’s a minimal configuration:
+
+```json
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+```
+
+### Scripts in `package.json`
+
+Include these scripts in your `package.json` for running and building the project:
+
+```json
+{
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev src/server.ts",
+    "start": "node dist/server.js"
+  }
+}
+```
+
+## Customize
+
+Feel free to customize this setup by adding more routes, connecting to databases, or using additional middleware as per your requirements.
+
