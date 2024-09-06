@@ -7,10 +7,12 @@ type ErrorOBJ = {
   name: string;
   message: string;
   stack?: string;
+  isOperational?: boolean;
 };
 
 interface CustomError extends Error {
   statusCode?: number;
+  isOperational?: boolean;
 }
 
 export const catchAsyncError =
@@ -24,16 +26,21 @@ export const globalErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  const message = err.message || "Internal Server Error";
+  let message = err.message || "Internal Server Error";
   const statusCode = err.statusCode || 500;
   const name = err.name || "InternalServerError";
 
-  const errObj: ErrorOBJ = { name, message };
+  // customError
+  if (err.name === "PrismaClientKnownRequestError")
+    message = "User already Exits please login";
 
+  // sending response
+  const errObj: ErrorOBJ = { name, message };
   if (NODE_ENV === "PRODUCTION") {
     return res.status(statusCode).json(errObj);
   }
 
+  errObj.isOperational = !!err.isOperational;
   errObj.stack = err.stack;
   console.error(errObj);
   res.status(statusCode).json(errObj);

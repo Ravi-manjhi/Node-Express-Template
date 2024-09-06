@@ -38,6 +38,7 @@ const logger = winston.createLogger({
               stack ? stack : ""
             }`;
           }
+
           return `${level} : ${message} | ${label} | ${timestamp}`;
         })
       ),
