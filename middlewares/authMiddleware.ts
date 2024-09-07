@@ -86,6 +86,21 @@ export const authorization = (allowedRoles: string[]) =>
     next();
   });
 
+export const authorizationSame = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
+    const id = req.params?.id;
+
+    if (user?.id !== id) {
+      return next(
+        new AppError("Not Authorized to perform this task", 403, "Forbidden")
+      );
+    }
+
+    next();
+  }
+);
+
 // Utility to clear session cookies and reset user data
 const ClearSession = (req: Request, res: Response, next: NextFunction) => {
   res.clearCookie("access_token");

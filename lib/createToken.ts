@@ -33,7 +33,8 @@ export const createRefreshToken = (
   });
 
   return res.cookie("refresh_token", token, {
-    maxAge: 15 * 60 * 1000,
+    expires: new Date(Date.now() + 15 * 3600000),
+    httpOnly: process.env.NODE_ENG === "DEVELOPMENT",
   });
 };
 
